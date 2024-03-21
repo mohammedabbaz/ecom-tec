@@ -6,7 +6,7 @@ export default function SeeMore({details}:{details:string}) {
   return (
     <Dialog >
     <DialogTrigger asChild>
-      <span  className='text-primary font-bold'>See more</span>
+      <span  className='text-primary font-bold cursor-pointer '>See more</span>
     </DialogTrigger>
     <DialogContent className="sm:max-w-3xl">
       <DialogHeader>

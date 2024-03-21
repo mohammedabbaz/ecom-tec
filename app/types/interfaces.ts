@@ -17,3 +17,12 @@ export type Product={
     slugs:string,
     details:string,
 }
+
+
+export type CartItem={
+    _id :string,
+    product:Product
+    
+    quantity:number,
+   
+}

@@ -13,7 +13,7 @@ export default async function MostProduct() {
       Most sellers  Products 
       </h2>
 
-      <ul className="mt-8 grid gap-4  sm:grid-cols-2 lg:grid-cols-4 text-start  mx-24  place-content-center" >
+      <ul className="mt-8 grid gap-4  sm:grid-cols-2 lg:grid-cols-4 text-start  mx-6  place-content-center" >
         {mostProduct.map((product, index) => (
           <ProductCard key={index} product={product} />
         ))}
