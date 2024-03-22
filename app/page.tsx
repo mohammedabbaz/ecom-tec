@@ -6,7 +6,7 @@ import FooterBanner from "./components/FooterBanner";
 
 export default function Home() {
   return (
-    <div className="container mb-10">
+    <div className="container my-16">
       <HeaderBanner />
 
       <MostProduct />

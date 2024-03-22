@@ -12,7 +12,6 @@ export type Product={
     _id :string,
     title:string,
     images:[Image],
-    // images:any,
     price:number,
     slugs:string,
     details:string,
@@ -20,9 +19,8 @@ export type Product={
 
 
 export type CartItem={
-    _id :string,
+    // _id :string,
     product:Product
-    
     quantity:number,
    
 }

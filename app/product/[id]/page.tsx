@@ -28,7 +28,7 @@ export default async function page({ params }: { params: { id: string } }) {
   
 
   return (
-    <div className="container mt-4 mb-4 space-y-4">
+    <div className="container my-16 space-y-4">
       {/* <div className="flex flex-col w-full  "> */}
       <div className="grid md:grid-cols-2 gap-8 w-full">
         {/* images gallery */}

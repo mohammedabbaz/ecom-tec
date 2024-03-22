@@ -22,17 +22,15 @@ export function StateProvider({ children }: { children: ReactNode }) {
   const [totalQuantities, settotalQuantities] = useState(0);
   const [CartItems, setCartItems] = useState<CartItem[]>([]);
 
-
   useEffect(() => {
-    getTotalQuantities()
-    getTotalPrice()
-  }, [CartItems])
-  
+    getTotalQuantities();
+    getTotalPrice();
+  }, [CartItems]);
 
   // add quantity
-  const incQuantity = () =>{
-    
-    setQuantity((prev) => prev + 1)};
+  const incQuantity = () => {
+    setQuantity((prev) => prev + 1);
+  };
 
   // remove quantity
   const decQuantity = () =>
@@ -50,24 +48,21 @@ export function StateProvider({ children }: { children: ReactNode }) {
 
     if (!checkIsInCart) {
       const item: CartItem = {
-        _id: "",
+       
         product: product,
         quantity: quantity,
       };
       setCartItems((prev) => [...prev, item]);
-      
     } else {
       const updateId = CartItems.indexOf(checkIsInCart);
-      CartItems[updateId].quantity=quantity
+      CartItems[updateId].quantity = quantity;
 
-      setCartItems((prev)=> [...prev])
-
+      setCartItems((prev) => [...prev]);
     }
     toast({
-        color: "#23ffgs",
-        description: `${quantity} ${product.title} added to cart `,
-      });
-      console.log(CartItems.length)
+      color: "#23ffgs",
+      description: `${quantity} ${product.title} added to cart `,
+    });
   };
 
   // get product quantity in details page
@@ -81,40 +76,51 @@ export function StateProvider({ children }: { children: ReactNode }) {
       }
     });
 
-      console.log(quantity)
-
+    // console.log(quantity);
   };
 
   // get cart item quantities
   const getTotalQuantities = () => {
-    let qty=0;
-    CartItems.map((item) =>
-      qty = qty+item.quantity
-    );
-    settotalQuantities(qty)
+    let qty = 0;
+    CartItems.map((item) => (qty = qty + item.quantity));
+    settotalQuantities(qty);
   };
 
   // get cart item quantities
   const getTotalPrice = () => {
-    let amount=0;
-    CartItems.map((item) =>
-      amount = amount+item.quantity *item.product.price
+    let amount = 0;
+    CartItems.map(
+      (item) => (amount = amount + item.quantity * item.product.price)
     );
-    settotalPrise(amount)
+    settotalPrise(amount);
   };
 
+  // function to delete item for cart item
 
-  const changeQty = ({cartitem , quantity , operation}:{cartitem:CartItem , quantity:number , operation:"+"|"-" })=>{
-    
+  const deleteCartItem = ({ cartitem }: { cartitem: CartItem }) => {
+    const index = CartItems.indexOf(cartitem);
+    CartItems.splice(index, 1);
 
-    if(operation=="+"){
-      CartItems[CartItems.indexOf(cartitem)].quantity= quantity+1;
-    }else{
+    setCartItems((prev) => [...prev]);
+  };
+
+  // function to change quantity in the cart sheet
+  const changeQty = ({
+    cartitem,
+    quantity,
+    operation,
+  }: {
+    cartitem: CartItem;
+    quantity: number;
+    operation: "+" | "-";
+  }) => {
+    if (operation == "+") {
+      CartItems[CartItems.indexOf(cartitem)].quantity = quantity + 1;
+    } else {
       CartItems[CartItems.indexOf(cartitem)].quantity = quantity - 1;
     }
-    setCartItems((prev)=>[...prev])
-  }
-  
+    setCartItems((prev) => [...prev]);
+  };
 
   return (
     <stateContext.Provider
@@ -128,24 +134,13 @@ export function StateProvider({ children }: { children: ReactNode }) {
         AddToCart,
         getProductQuantity,
         changeQty,
-       
+        deleteCartItem,
       }}
     >
       {children}
       <Toaster />
     </stateContext.Provider>
   );
-
-
-
-
-
-
-
- 
-
-
-
 }
 
 export const useStateContsext = () => useContext(stateContext);

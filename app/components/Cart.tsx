@@ -1,34 +1,73 @@
 "use client";
 import { Button } from "@/components/ui/button";
+import { loadStripe } from "@stripe/stripe-js";
 
 import {
   Sheet,
   SheetClose,
   SheetContent,
-  SheetDescription,
-  SheetFooter,
-  SheetHeader,
-  SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { ShoppingBagIcon, Trash } from "lucide-react";
+import { CircleX, ShoppingBagIcon } from "lucide-react";
 import { useStateContsext } from "../context/StateContext";
 import { CartItem } from "../types/interfaces";
 import { urlForImage } from "@/sanity/lib/image";
 import Link from "next/link";
 
 export function Cart() {
-  const { totalQuantities, CartItems, totalPrise, changeQty } =
+  const { totalQuantities, CartItems, totalPrise, changeQty, deleteCartItem } =
     useStateContsext();
+
+  // check out function
+
+  const handleCheckOut = async () => {
+    try {
+      const stripe = await loadStripe(
+        process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY as string
+      );
+
+      if (!stripe) throw new Error("Stripe failed to initialize.");
+
+      const checkoutResponse = await fetch(
+        "http://localhost:3000/api/checkout",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ cartItems: CartItems }),
+        }
+      )
+        .then((response) => {
+          return response.json()
+        }).then((res)=>{
+          
+          if(res.url){
+            // redirect to checkout page 
+            // redirect(res.url)
+            window.location.href=res.url;
+          }
+          
+        })
+        .catch((err: any) => {
+          console.log(err);
+        });
+   
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   return (
     <Sheet>
       <SheetTrigger asChild>
         <div className="flex relative">
           <ShoppingBagIcon className="" />
-          <span className=" rounded-full  bg-primary text-white text-[5px] items-center justify-center flex absolute size-3 -top-1 -right-1 ">
-            {totalQuantities}
-          </span>
+          {totalQuantities > 0 && (
+            <span className=" rounded-full  bg-primary text-white text-[5px] items-center justify-center flex absolute size-3 -top-1 -right-1 ">
+              {totalQuantities}
+            </span>
+          )}
         </div>
       </SheetTrigger>
       <SheetContent>
@@ -40,16 +79,14 @@ export function Cart() {
         ) : (
           <div className="flex flex-col gap-4 w-full overflow-y-auto p-2  h-full">
             {CartItems.map((cart: CartItem, index: number) => {
-
-                const quantity = cart.quantity
-                
+              const quantity = cart.quantity;
 
               return (
-                <Link key={index} href={"/product/" + cart.product._id}>
-                  <div
-                    key={index}
-                    className="flex items-center w-full rounded-lg shadow-md  justify-between relative"
-                  >
+                <div
+                  key={index}
+                  className="flex items-center w-full rounded-lg shadow-md  justify-between relative"
+                >
+                  <Link key={index} href={"/product/" + cart.product._id}>
                     <div className="flex gap-2 px-1 py-3 items-center justify-center w-4/5">
                       <div className="flex-shrink-0">
                         <img
@@ -77,38 +114,51 @@ export function Cart() {
                         </div>
                       </div>
                     </div>
-                    <div className="mb-2">
-                      {/* quantity button */}
-                      <div className=" flex">
-                        <button 
-                        onClick={()=>changeQty({quantity: quantity , cartitem:cart , operation:"-"})}
-                        
-                        type="button" className="h-7 w-7">
-                          -
-                        </button>
-                        <p className="mx-1 h-7 w-9 rounded-md border text-center">
-                          {cart.quantity}
-                        </p>
-                        <button
-
-                        onClick={()=>changeQty({quantity: quantity , cartitem:cart , operation:"+"})}
-                          type="button"
-                          className="flex h-7 w-7 items-center justify-center"
-                        >
-                          +
-                        </button>
-                      </div>
-
+                  </Link>
+                  <div className="mb-2">
+                    {/* quantity button */}
+                    <div className=" flex">
                       <button
-
+                        onClick={() =>
+                          changeQty({
+                            quantity: quantity,
+                            cartitem: cart,
+                            operation: "-",
+                          })
+                        }
                         type="button"
-                        className="flex items-center absolute top-0 right-1"
+                        className="h-7 w-7"
                       >
-                        <Trash size={12} className="text-red-500" />
+                        -
+                      </button>
+                      <p className="mx-1 h-7 w-9 rounded-md border text-center">
+                        {cart.quantity}
+                      </p>
+                      <button
+                        onClick={() =>
+                          changeQty({
+                            quantity: quantity,
+                            cartitem: cart,
+                            operation: "+",
+                          })
+                        }
+                        type="button"
+                        className="flex h-7 w-7 items-center justify-center"
+                      >
+                        +
                       </button>
                     </div>
+
+                    {/* remove button  */}
+                    <button
+                      type="button"
+                      onClick={() => deleteCartItem({ cartitem: cart })}
+                      className="flex items-center absolute top-0 right-1"
+                    >
+                      <CircleX size={12} className="text-red-500" />
+                    </button>
                   </div>
-                </Link>
+                </div>
               );
             })}
 
@@ -120,22 +170,17 @@ export function Cart() {
               </div>
               <div className="flex justify-between !text-base font-medium">
                 <h3>Total amount :</h3>
-                <h3>{totalPrise}</h3>
+                <h3>{totalPrise.toFixed(2)}</h3>
               </div>
             </div>
             <div className="space-y-4 flex flex-col text-center">
-              <Button>
-                <SheetClose asChild>
-                  <Link href={"/Checkout"}>Checkout</Link>
-                </SheetClose>
-              </Button>
+              <SheetClose asChild>
+                <Button onClick={() => handleCheckOut()}>Checkout</Button>
+              </SheetClose>
 
-              <Button
-                variant={"link"}
-                className="inline-block text-sm underline underline-offset-4 "
-              >
-                Continue shopping
-              </Button>
+              <SheetClose asChild>
+                <Link href={"/"}> Continue shopping</Link>
+              </SheetClose>
             </div>
           </div>
         )}

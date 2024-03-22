@@ -81,11 +81,9 @@ export default function ProductDetails({ product  }: { product: Product  }) {
       {/* add to cart button and checkout button */}
       <div className="flex  gap-3 my-6 md:my-12">
         <Button
-          hidden
+          disabled={quantity==0}
           onClick={() =>
-            quantity == 0
-              ? toast({ description: "please add quantity first" })
-              : AddToCart(product)
+             AddToCart(product)
           }
           className={` text-sm capitalize `}
         >
