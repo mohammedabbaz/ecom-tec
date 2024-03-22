@@ -32,7 +32,7 @@ export default function NavBar() {
             <Cart/>
             {/* login button  */}
 
-            <img src="https://avatar.vercel.sh?text=GR" alt=""  className="size-8 rounded-full" />
+            {/* <img src="https://avatar.vercel.sh?text=GR" alt=""  className="size-8 rounded-full" /> */}
         </div>
       </div>
     </div>

@@ -66,7 +66,7 @@ export function Cart() {
   return (
     <Sheet open={showCart}  onOpenChange={(value)=>{setShowCart(value)}} >
       <SheetTrigger asChild>
-        <div className="flex relative">
+        <div className="flex relative cursor-pointer">
           <ShoppingBagIcon className="" />
           {totalQuantities > 0 && (
             <span className=" rounded-full  bg-primary text-white text-[5px] items-center justify-center flex absolute size-3 -top-1 -right-1 ">

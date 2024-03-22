@@ -52,10 +52,6 @@ const data:CartItem[] = cartItems;
 
   const session = await stripe.checkout.sessions.create(params);
 
-//   console.log('====================================');  
-// console.log(session.url);
-
-// console.log('====================================');
 
 // send checkout url to cart handelpage in cart component
 // return NextResponse.json({url:session.url})
