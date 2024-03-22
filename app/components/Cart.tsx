@@ -15,7 +15,8 @@ import { urlForImage } from "@/sanity/lib/image";
 import Link from "next/link";
 
 export function Cart() {
-  const { totalQuantities, CartItems, totalPrise, changeQty, deleteCartItem } =
+  const { totalQuantities, CartItems, totalPrise, changeQty, deleteCartItem ,    showCart , 
+    setShowCart } =
     useStateContsext();
 
   // check out function
@@ -42,11 +43,15 @@ export function Cart() {
           return response.json()
         }).then((res)=>{
           
-          if(res.url){
+          if(res.session){
             // redirect to checkout page 
             // redirect(res.url)
-            window.location.href=res.url;
+            // window.location.href=res.url;
+            // redirect to checkout page using session id
+            stripe.redirectToCheckout({sessionId:res.session.id})
           }
+          
+          
           
         })
         .catch((err: any) => {
@@ -59,7 +64,7 @@ export function Cart() {
   };
 
   return (
-    <Sheet>
+    <Sheet open={showCart}  onOpenChange={(value)=>{setShowCart(value)}} >
       <SheetTrigger asChild>
         <div className="flex relative">
           <ShoppingBagIcon className="" />

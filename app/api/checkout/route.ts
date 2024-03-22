@@ -58,7 +58,9 @@ const data:CartItem[] = cartItems;
 // console.log('====================================');
 
 // send checkout url to cart handelpage in cart component
-return NextResponse.json({url:session.url})
+// return NextResponse.json({url:session.url})
+// send session
+return NextResponse.json({session:session})
 
 
 

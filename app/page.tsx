@@ -12,7 +12,7 @@ export default function Home() {
       <MostProduct />
     
       <FooterBanner />
-      <Footer />
+   
     </div>
   );
 }

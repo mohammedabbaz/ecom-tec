@@ -1,7 +1,20 @@
+"use client"
+import { CanvasConffeti } from "@/app/utils/canvas-cenffety";
 import { Button } from "@/components/ui/button";
-import React from "react";
+import React, { useEffect } from "react";
 
 function page() {
+
+
+
+  useEffect(() => {
+    CanvasConffeti()
+  
+  
+  }, [])
+  
+
+
   return (
     <div className="h-full w-full flex items-center justify-center my-16">
         <div className="bg-white p-6  md:mx-auto">

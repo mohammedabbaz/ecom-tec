@@ -17,6 +17,7 @@ export const stateContext = createContext<any | undefined>(undefined);
 export function StateProvider({ children }: { children: ReactNode }) {
   const { toast } = useToast();
 
+  const [showCart, setShowCart] = useState(false);
   const [quantity, setQuantity] = useState(0);
   const [totalPrise, settotalPrise] = useState(0);
   const [totalQuantities, settotalQuantities] = useState(0);
@@ -35,8 +36,10 @@ export function StateProvider({ children }: { children: ReactNode }) {
   // remove quantity
   const decQuantity = () =>
     setQuantity((prev) => {
-      if (prev == 1) return 0;
-      return prev - 1;
+      if (prev > 0){
+        return prev - 1;
+      }
+      return 0
     });
 
   // addTo cart function
@@ -135,6 +138,8 @@ export function StateProvider({ children }: { children: ReactNode }) {
         getProductQuantity,
         changeQty,
         deleteCartItem,
+        showCart , 
+        setShowCart
       }}
     >
       {children}

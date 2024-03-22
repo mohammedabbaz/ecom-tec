@@ -22,6 +22,6 @@
     },
     "target": "ES2017"
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "app/api/stripe.ts", "app/api/checkout/route.ts"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "app/api/stripe.ts", "app/api/checkout/route.ts", "app/utils/canvas-cenffety.js"],
   "exclude": ["node_modules"]
 }

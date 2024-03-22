@@ -4,6 +4,7 @@ import "./globals.css";
 import NavBar from "./components/NavBar";
 import { StateProvider } from "./context/StateContext";
 import { Toaster } from "@/components/ui/toaster";
+import Footer from "./components/Footer";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -23,7 +24,7 @@ export default function RootLayout({
        <StateProvider>
        <NavBar />
         {children}
-        
+        <Footer/>
        </StateProvider>
       </body>
     </html>

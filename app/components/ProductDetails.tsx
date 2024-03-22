@@ -14,12 +14,18 @@ export default function ProductDetails({ product  }: { product: Product  }) {
 
 
 
-  const { quantity, incQuantity, decQuantity, AddToCart, getProductQuantity , CartItems } =
+  const { quantity, incQuantity, decQuantity, AddToCart, getProductQuantity , CartItems , setShowCart } =
     useStateContsext();
 
   useEffect(() => {
     getProductQuantity(product);
   }, [pathname, product , CartItems ]);
+
+
+  const buyNow = ()=>{
+    AddToCart(product)
+    setShowCart(true)
+  }
 
   return (
     <div className="py-6 flex flex-col space-y-3 text-start">
@@ -89,7 +95,14 @@ export default function ProductDetails({ product  }: { product: Product  }) {
         >
           Add to cart
         </Button>
-        <Button className="text-sm capitalize">buy now</Button>
+        <Button
+          disabled={quantity==0}
+          onClick={buyNow
+          }
+          className={` text-sm capitalize `}
+        >
+          Buy now
+        </Button>
       </div>
       {/* description  */}
       <div className="flex flex-col gap-2">
